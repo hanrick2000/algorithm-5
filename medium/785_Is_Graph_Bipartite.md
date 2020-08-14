@@ -38,5 +38,49 @@ class Solution {
     }
 }
 ```
+```
+BFS(G,s)
+1.  for each vertex u ∈ G.V - {s}
+2.     u.color == WHITE
+3.     u.d = INF
+4.     u.pi = NIL
+5.  s.color = GRAY
+6.  s.d = 0
+7.  s.pi = NIL
+8.  Q = ∅
+9.  ENQUEUE(Q,s)
+10. while Q ≠ ∅
+11.    u = DEQUEUE(Q)
+12.    for each v ∈ G.Adj[u]
+13.       if v.color == WHITE
+14.          v.color = GRAY
+15.          v.d = u.d + 1
+16.          v.pi = u
+17.          ENQUEUE(Q,v)
+18.    u.color = BLACK
+```
   * Method 2 DFS
       * 
+      
+ ```
+ DFS(G)
+1.  for each vertex u ∈ G.V
+2.     u.color = WHITE
+3.     u.pi = NIL
+4.  time = 0
+5.  for each vertex u ∈ G.V
+6.     if u.color == WHITE
+7.        DFS-VISIT(G,u)
+
+DFS-VISIT(G,u)
+1.  time = time + 1
+2.  u.d = time
+3.  u.color = GRAY
+4.  for each v ∈ G.Adj[u]
+5.     if v.color == WHITE
+6.        v.pi = u
+7.        DFS-VISIT(G,v)
+8.  u.color = BLACK
+9.  time = time + 1
+10. u.f = time
+ ```
