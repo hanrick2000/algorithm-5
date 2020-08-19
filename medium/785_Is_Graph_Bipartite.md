@@ -84,27 +84,31 @@ DFS-VISIT(G,u)
 9.  time = time + 1
 10. u.f = time
  ```
+ Method 2 DFS:
+ * Do DFS only if the node has not been visited.
+ * Sign the color in the dfs function
+ * Check if the neighbor is visited before
  ```java
- class Solution {
+class Solution {
     public boolean isBipartite(int[][] graph) {
-        int n = graph.length;
-        int[] colors = new int[n];			
-				
-        for (int i = 0; i < n; i++) {              //This graph might be a disconnected graph. So check each unvisited node.
-            if (colors[i] == 0 && !validColor(graph, colors, 1, i)) {
+        if (graph == null || graph.length == 0) {
+            return false;
+        }
+        int row = graph.length;
+        int[] visited = new int[row];
+        for (int i = 0; i < row; i++) {
+            if (visited[i] == 0 && !dfs(graph, visited, i, 1)){
                 return false;
             }
         }
         return true;
     }
-    
-    public boolean validColor(int[][] graph, int[] colors, int color, int node) {
-        if (colors[node] != 0) {
-            return colors[node] == color;
-        }       
-        colors[node] = color;       
-        for (int next : graph[node]) {
-            if (!validColor(graph, colors, -color, next)) {
+    public boolean dfs(int[][] graph, int[] visited, int node, int color){
+        visited[node] = color;
+        for (int i = 0; i < graph[node].length; i++) {
+            if (visited[node] == visited[graph[node][i]]) {
+                return false;
+            } if (visited[graph[node][i]] == 0 && !dfs(graph, visited, graph[node][i], -color)) {
                 return false;
             }
         }
