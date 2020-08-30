@@ -143,8 +143,93 @@ class Solution {
 
 -------
 
+#### 438. Find All Anagrams in a String
+
+```java
+class Solution {
+    public List<Integer> findAnagrams(String s, String p) {
+        if (s == null || s.length() < p.length()) {
+            return new ArrayList<Integer>(0);
+        }
+        List<Integer> res = new ArrayList<>();
+        int left = 0;
+        HashMap<Character, Integer> map = map(p);
+        int match = map.size();
+        for (int i = 0; i < s.length(); i++) {
+            Character cur = s.charAt(i);
+            Integer temp = map.get(cur);
+            if (temp != null) {
+                map.put(cur, temp - 1);
+                if (temp == 1) {
+                    match--;
+                }
+            }
+            if (i >= p.length()) {
+                cur = s.charAt(left);
+                temp = map.get(cur);
+                if (temp != null) {
+                    map.put(cur, temp + 1);
+                    if (temp == 0) {
+                        match++;
+                    }
+                }
+                left++;
+            }
+            if (match == 0) {
+                res.add(left);
+            } 
+            
+        }
+        return res;
+        
+    }
+    public HashMap<Character, Integer> map(String p) {
+        HashMap<Character, Integer> map = new HashMap<>();
+        for (int i = 0; i < p.length(); i++) {
+            Character cur = p.charAt(i);
+            if (map.containsKey(cur)) {
+                map.put(cur, map.get(cur) + 1);
+            } else {
+                map.put(cur, 1);
+            }
+        }
+        return map;
+    }
+}
+
+```
+-------
+
 #### 239. Sliding Window Maximum
 
 Given an array nums, there is a sliding window of size k which is moving from the very left of the array to the very right. You can only see the k numbers in the window. Each time the sliding window moves right by one position. Return the max sliding window.
 
+ * 
+
+```java
+class Solution {
+    public int[] maxSlidingWindow(int[] nums, int k) {
+        if (nums == null || nums.length == 0) {
+            return new int[0];
+        }
+        int[] res = new int[nums.length - k + 1];
+        int left = 0;
+        Deque<Integer> dq = new LinkedList<>();
+        for (int i = 0; i < nums.length; i++) {
+            while (!dq.isEmpty() && dq.peekLast() < nums[i]) {
+                dq.pollLast();
+            }
+            dq.offerLast(nums[i]);
+            if (i >= k - 1) {
+                res[left] = dq.peekFirst();
+                if (dq.peekFirst() == nums[left]){
+                    dq.pollFirst();
+                }
+                left++;
+            }
+        }
+        return res;
+    }
+}
+```
   
