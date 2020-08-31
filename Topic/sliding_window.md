@@ -232,4 +232,34 @@ class Solution {
     }
 }
 ```
-  
+----
+#### Longest Substring with At Most K Distinct Characters
+
+Given a string S, find the length of the longest substring T that contains at most k distinct characters.
+
+ * use a hashmap key is the character, value is the right most position of this character.
+ * when the map size equals to k, and the new character is not in the hashmap, start removing the left side characters
+ * notice, after one character is removed from the map, left pointer should move to the next position.
+
+```java
+    public int lengthOfLongestSubstringKDistinct(String s, int k) {
+        if (s == null || s.length() == 0 || k == 0) {
+            return 0;
+        }
+        int max = 0;
+        HashMap<Character, Integer> map = new HashMap<>();
+        int left = 0;
+        for (int i = 0; i < s.length(); i++) {
+            if (map.size() == k && !map.containsKey(s.charAt(i))) {
+                while (left < map.get(s.charAt(left))) {
+                    left++;
+                }
+                map.remove(s.charAt(left));
+                left++;
+            } 
+            map.put(s.charAt(i), i);
+            max = Math.max(max, i - left + 1);
+        }
+        return max;
+    }
+```
