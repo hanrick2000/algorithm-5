@@ -148,6 +148,40 @@ public class Solution {
 ```
 ----
 
+#### Binary Tree Maximum Path Sum
+
+Given a non-empty binary tree, find the maximum path sum.
+
+For this problem, a path is defined as any sequence of nodes from some starting node to any node in the tree along the parent-child connections. The path must contain at least one node and does not need to go through the root.
+
+  * Ask the left and right subtree for the sum respectively, if the sum is smaller than 0, that mean this sum will not have contribution to the sum that need to return.
+  * find out the max sum at the current node
+  * return the left or the right sum plus the node.val
+
+```java
+class Solution {
+
+    public int maxPathSum(TreeNode root) {
+        if (root == null) {
+            return 0;
+        }
+        int[] max = {Integer.MIN_VALUE};
+        sum(root, max);
+        return max[0];
+    }
+    private int sum(TreeNode root, int[] max) {
+        if (root == null) {
+            return 0;
+        }
+        int left = Math.max(sum(root.left, max), 0);
+        int right = Math.max(sum(root.right, max), 0);
+        max[0] = Math.max(left + right + root.val, max[0]);
+        return root.val + Math.max(left, right);
+    }
+}
+```
+----
+
 #### Max Of Min Altitudes
 
 https://leetcode.com/discuss/interview-question/383669/
@@ -209,7 +243,12 @@ We return the value in the bottom right. The answer is 5.
   }
 ```
 ----
+Given a map Map<String, List<String>> userSongs with user names as keys and a list of all the songs that the user has listened to as values.
 
+Also given a map Map<String, List<String>> songGenres, with song genre as keys and a list of all the songs within that genre as values. The song can only belong to only one genre.
+
+The task is to return a map Map<String, List<String>>, where the key is a user name and the value is a list of the user's favorite genre(s). Favorite genre is the most listened to genre. A user can have more than one favorite genre if he/she has listened to the same number of songs per each of the genres.
+  
 https://leetcode.com/discuss/interview-question/373006/Amazon-or-OA-2019-or-Favorite-Genres
 
 ```java
