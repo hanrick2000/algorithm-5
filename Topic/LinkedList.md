@@ -152,7 +152,68 @@ class Solution {
     }
 }
 ```
+------
+#### 24. Swap Nodes in Pairs
+
+Given a linked list, swap every two adjacent nodes and return its head.
+
+```java
+class Solution {
+    public ListNode swapPairs(ListNode head) {
+        if (head == null || head.next == null) {
+            return head;
+        }
+        ListNode newHead = head.next;
+        ListNode subHead = swapPairs(head.next.next);
+        head.next.next = head;
+        head.next = subHead;
+        return newHead;
+    }
+}
+```
+#### 25. Reverse Nodes in k-Group
+
+Given a linked list, reverse the nodes of a linked list k at a time and return its modified list.
+
+  * find the kth node, kth node's next is the sub problem, so it is the head of the next sub problem. Breank the list here and reverse from head to kth node.
+  * Then head.next is the subproblem's new solved head.
+  * return the current new head to the higher leverl.
 -------
+```java
+class Solution {
+    public ListNode reverseKGroup(ListNode head, int k) {
+        if (head == null) {
+            return head;
+        }
+        ListNode fast = head;
+        int n = k;
+        while (n > 1) {
+            if (fast.next == null) {
+                return head;
+            }
+            fast = fast.next;
+            n--;
+        }
+        ListNode next = fast.next;
+        fast.next = null;
+        ListNode newHead = reverse(head);
+        ListNode subHead = reverseKGroup(next, k);
+        head.next = subHead;
+        return newHead;
+    }
+    private ListNode reverse(ListNode head) {
+        if (head == null || head.next == null) {
+            return head;
+        }
+        ListNode next = head.next;
+        ListNode newHead = reverse(next);
+        next.next = head;
+        head.next = null;
+        return newHead;
+    }
+}
+```
+------
 #### 148. Sort List
 
 Sort a linked list in O(n log n) time using constant space complexity.
